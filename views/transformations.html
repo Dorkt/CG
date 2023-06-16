@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformações</title>
+    <link rel="shortcut icon" href="../assets/favicon.png"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/lib/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div id="nav-placeholder"></div>
+<main>
+    <div class="container-fluid p-0 m-0 justify-content-center d-grid" style="min-height: 400px;">
+        <div class="row w-100 p-0 w-0">
+            <div class="col-lg-4 mb-2 align-items-center">
+                <div class="card mx-auto" style="width:300px; height: 400px;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Imagem Original</h5>
+                        <div class="card-img-top" id="original-img"></div>
+                        <div style="width: 256px; height: 50px;" class="text-center">
+                            <select class="form-select" aria-label="Selecionar filtro" id="img-selector">
+                                <option selected value="0">Lena</option>
+                                <option value="1">Cameraman</option>
+                                <option value="2">Airplane</option>
+                                <option value="3">Pepper</option>
+                                <option value="4">Brain</option>
+                                <option value="5">Barbara</option>
+                                <option value="6">Tyre</option>
+                                <option value="7">Einstein</option>
+                                <option value="8">Sea</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-2">
+                <div class="card  mx-auto align-items-center" style="width:300px; height: 400px;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Transformação</h5>
+                        <div style="width: 280px; height: 135px;" class="text-center">
+                            <select class="form-select" size="5" aria-label="Selecionar filtro" id="input-filter">
+                                <option selected value="0">Original</option>
+                                <option value="1">Negativo</option>
+                                <option value="2">Gamma</option>
+                                <option value="3">Logarítmica</option>
+                                <option value="4">Linear ax+b</option>
+                                <option value="5">Faixa Dinâmica</option>
+                                <option value="6">Sigmoide</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div class="container text-end" style="width: 280px;">
+                            <form id="input-matrix" role="form">
+                                <label style="padding-bottom: 10px">Gamma:
+                                    <input type="number" name="array[]" value="1" min="0" max="5" step="0.1"
+                                           style="width: 50px; text-align:center">
+                                </label>
+                                <label style="padding-bottom: 10px">Log scalar (a):
+                                    <input type="number" name="array[]" value="1" min="0" max="10" step=".1"
+                                           style="width: 50px; text-align:center">
+                                </label>
+                                <label style="padding-bottom: 10px">Linear (a) (b):
+                                    <input type="number" name="array[]" value="1" step="1"
+                                           style="width: 50px; text-align:center">
+                                    <input type="number" name="array[]" value="1" step="1"
+                                           style="width: 50px; text-align:center">
+                                </label>
+                                <label style="padding-bottom: 10px">Target Faixa Dinâmica:
+                                    <input type="number" name="array[]" value="255" step="1"
+                                           style="width: 50px; text-align:center">
+                                </label>
+                                <label style="padding-bottom: 10px">Sigmoide (w) (𝜎):
+                                    <input type="number" name="array[]" value="127" step="1"
+                                           style="width: 50px; text-align:center">
+                                    <input type="number" name="array[]" value="25" step="1"
+                                           style="width: 50px; text-align:center">
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-2">
+                <div class="card  mx-auto align-items-center" style="width:300px; height: 400px;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Imagem Processada</h5>
+                        <div class="card-img-top" id="processed-img"></div>
+                        <div class="form-check form-switch" style="margin: 10px 0 10px">
+                            <input class="form-check-input" type="checkbox" id="normalizeSwitch">
+                            <label class="form-check-label" for="normalizeSwitch">Normalizar [0-255]</label>
+                        </div>
+                        <div class="btn-group d-flex" role="group">
+                            <button type="button" class="btn btn-dark" id="apply-again-btn">
+                                Reusar
+                            </button>
+                            <button type="button" class="btn btn-outline-dark" id="download-btn">
+                                Baixar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    fetch('navbar.html')
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (body) {
+            document.getElementById('nav-placeholder').innerHTML = body;
+            document.getElementById('transformations-li').classList.add('active');
+        });
+</script>
+<script src="../js/lib/p5.min.js"></script>
+<script src="../js/src/utils.js"></script>
+<script src="../js/src/transformations.js"></script>
+</body>
+</html>
