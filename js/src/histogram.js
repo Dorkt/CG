@@ -1,5 +1,5 @@
 const imagesPath = {
-    0: '../../assets/lena.pgm',
+    0: '../assets/lena.pgm',
 };
 
 const imgSelector = document.getElementById('img-selector');
@@ -16,7 +16,7 @@ let processedImg = new Image();
 const mainCanvas = function (sketch) {
     sketch.setup = function () {
         sketch.createCanvas(256, 256).parent("original-img");
-        readImage('../../assets/lena.pgm', sketch, img);
+        readImage('../assets/lena.pgm', sketch, img);
     }
 
     imgSelector.onchange = _ => readImage(imagesPath[imgSelector.value], sketch, img);
@@ -42,17 +42,17 @@ let processedCanvas = function (sketch) {
 };
 
 
-const originalHistCanvas = function (sketch) {
+const originalHistogramaCanvas = function (sketch) {
     sketch.setup = function () {
         sketch.createCanvas(400, 200).parent("original-hist");
-        if (img.w !== 0) drawHist(sketch, img, 350, 180, true);
+        if (img.w !== 0) drawHistograma(sketch, img, 350, 180);
     }
 }
 
-const processedHistCanvas = function (sketch) {
+const processedHistogramaCanvas = function (sketch) {
     sketch.setup = function () {
         sketch.createCanvas(400, 200).parent("processed-hist");
-        if (processedImg.w !== 0) drawHist(sketch, processedImg, 350, 180, true);
+        if (processedImg.w !== 0) drawHistograma(sketch, processedImg, 350, 180);
     }
 
     downloadBtn.onclick = function () {
@@ -64,12 +64,12 @@ const processedHistCanvas = function (sketch) {
 
 new p5(mainCanvas, 'p5sketch');
 new p5(processedCanvas, 'p5sketch');
-const originalHist = new p5(originalHistCanvas, 'p5sketch');
-const processedHist = new p5(processedHistCanvas, 'p5sketch');
+const originalHist = new p5(originalHistogramaCanvas, 'p5sketch');
+const processedHist = new p5(processedHistogramaCanvas, 'p5sketch');
 
 
 function equalizeImage(img) {
-    let hist = instantiateHistogram(img);
+    let hist = initHistograma(img);
     let histProb = getHistProb(hist, img.h * img.w);
     let acc = getAccumulatedProba(histProb);
     let scale = getScaleArr(acc);
@@ -86,7 +86,7 @@ function equalizeImage(img) {
 }
 
 
-function instantiateHistogram(img) {
+function initHistograma(img) {
     let hist = new Array(256).fill(0);
 
     for (let i = 0; i < img.h; i++) {
@@ -130,10 +130,9 @@ function getScaleArr(arr) {
 }
 
 
-function drawHist(sketch, img, width, height, showCDF = false) {
-    let hist = instantiateHistogram(img);
+function drawHistograma(sketch, img, width, height) {
+    let hist = initHistograma(img);
     let sum = 0;
-    let cumulative = hist.map(x => sum += x);
 
     let min = sketch.min(hist);
     let max = sketch.max(hist);
@@ -164,7 +163,7 @@ function drawHist(sketch, img, width, height, showCDF = false) {
     sketch.line(0, y1 + 2, 0, y1 + 4); // start x
     sketch.text('0', 2, y1 + 10);
 
-    sketch.text('< Nivel de cinza >', range / 2 - 30, y1 + 10);
+    sketch.text('< (K) Niveís   de   cinza >', range / 2 - 30, y1 + 10);
 
     sketch.line(range, y1 + 2, range, y1 + 4); // end x
     sketch.text('255', range + 2, y1 + 10);
@@ -178,7 +177,7 @@ function drawHist(sketch, img, width, height, showCDF = false) {
     sketch.text(`${max}`, -20, vPadding);
 
     sketch.rotate(sketch.radians(90));
-    sketch.text('< Intensidade >', graphHeight / 2 - 10, 20)
+    sketch.text('Intensidade   da   imagem', graphHeight / 2 - 10, 20)
     sketch.rotate(sketch.radians(-90));
 
 
@@ -186,22 +185,6 @@ function drawHist(sketch, img, width, height, showCDF = false) {
     for (let i = 0; i < range; i++) {
         y2 = sketch.int(sketch.map(hist[i], min, max, 0, graphHeight));
         if (y2 !== 0) sketch.line(i, y1, i, y1 - y2);
-    }
-
-    if (showCDF) {
-        sketch.stroke(0);
-        sketch.strokeWeight(2);
-        let min = sketch.min(cumulative);
-        let max = sketch.max(cumulative);
-
-        sketch.beginShape();
-        sketch.noFill();
-
-        for (let i = 0; i < range; i++) {
-            let y2 = sketch.int(sketch.map(cumulative[i], min, max, 0, graphHeight));
-            sketch.curveVertex(i, y1 - y2);
-        }
-        sketch.endShape();
     }
 
     sketch.pop();

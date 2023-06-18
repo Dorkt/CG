@@ -9,6 +9,9 @@ function readImage(path, sketch, img) {
     fetch(path).then(data => data.blob().then(file => buildImage(file, sketch, img)));
 }
 
+function readImage2(data, sketch, img) {
+    data.blob().then(file => buildImage(file, sketch, img));
+}
 
 const buildImage = function (file, sketch, img) {
     let reader = new FileReader();
@@ -54,7 +57,6 @@ const buildImage = function (file, sketch, img) {
 function paintImage(sketch, img) {
     sketch.resizeCanvas(img.w, img.h);
     sketch.loadPixels();
-
     let binary = img.type === 'P1';
 
     for (let i = 0; i < img.h; ++i) {
@@ -101,16 +103,18 @@ function convolution(img, k, doNormalize) {
     return doNormalize ? normalize(res, w, h) : res;
 }
 
-
-function magnitude(gx, gy, w, h, doNormalize) {
+// Método que tira a magnitude da imagem
+// Math.abs = Retorna o valor absoluto de um dado número
+function magnitude(gx, gy, width, height, normalize) {
     let res = [];
-    for (let i = 0; i < h; i++) {
+    for (let i = 0; i < height; i++) {
         res[i] = [];
-        for (let j = 0; j < w; j++) {
+        for (let j = 0; j < width; j++) {
             res[i][j] = Math.abs(gx[i][j]) + Math.abs(gy[i][j]);
         }
     }
-    return doNormalize ? normalize(res, w, h) : res;
+    // Função de normalização, que faz o arredondamento de valores
+    return normalize ? normalize(res, w, h) : res;
 }
 
 function composition(a, b, w, h, operator, doNormalize = false) {

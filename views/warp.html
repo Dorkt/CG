@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morfismo</title>
+    <title>Gato de Arnold</title>
     <link rel="shortcut icon" href="../assets/favicon.png"/>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <script src="../js/lib/bootstrap.bundle.min.js"></script>
@@ -13,43 +13,40 @@
 <body>
 <div id="nav-placeholder"></div>
 <main>
-    <div class="container">
-        <div class="row">
-            <div class="col-4">
-                <div class="card text-center" style="height: 450px;">
+    <div class="container-fluid p-0 m-0 justify-content-center d-grid" style="min-height: 400px;">
+        <div class="row w-100 p-0 w-0">
+            <div class="col-lg-4 mb-2 align-items-center">
+                <div class="card mx-auto" style="width:300px; height: 400px;">
                     <div class="card-body">
-                        <h5 class="card-title">Imagem Original</h5>
-                        <div class="card-img-top" id="start-img"></div>
-                        <label for="start-img" id="start-pts">Pts: 0</label><br>
-                        <div class="btn btn-sm btn-dark" id="triangulate-a-btn">Triangular</div>
+                        <h5 class="card-title text-center">Imagem Original</h5>
+                        <div class="card-img-top" id="original-img"></div>
+                        <div style="width: 256px; height: 50px;" class="text-center">
+                            <select class="form-select mt-4" aria-label="Selecionar filtro" id="img-selector">
+                                <option selected value="0">Lena</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card text-center" style="height: 450px;">
-                    <div class="card-body">
-                        <h5 class="card-title">Imagem destino</h5>
-                        <div class="card-img-top" id="end-img"></div>
-                        <label for="start-img" id="end-pts">Pts: 0</label><br>
-                        <div class="btn btn-sm btn-dark" id="triangulate-b-btn">Triangular</div>
-                    </div>
-                </div>
+            <div class="col-lg-4 mb-2">
             </div>
-            <div class="col-4">
-                <div class="card text-center" style="height: 450px;">
-                    <div class="card-body mx-auto">
-                        <h5 class="card-title">Resultado</h5>
-                        <div class="card-img-top" id="result-img"></div>
-                        <div class="btn btn-sm btn-dark" id="apply-btn">Processar</div>
-                        <br>
-                        <label for="range-control" class="form-label">Imagem</label>
-                        <input type="range" max="9" min="0" value="0" class="form-range" id="range-control">
+            <div class="col-lg-4 mb-2">
+                <div class="card  mx-auto align-items-center" style="width:300px; height: 400px;">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Imagem Processada</h5>
+                        <div class="card-img-top" id="processed-img"></div>
+                        <div class="btn-group d-flex mt-4" role="group">
+                            <button type="button" class="btn btn-outline-dark" id="input-filter">
+                                Aplicar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
+
 <script>
     fetch('navbar.html')
         .then(function (response) {
@@ -62,7 +59,6 @@
 </script>
 <script src="../js/lib/p5.min.js"></script>
 <script src="../js/src/utils.js"></script>
-<script src="../js/src/delauney.js"></script>
 <script src="../js/src/warp.js"></script>
 </body>
 </html>

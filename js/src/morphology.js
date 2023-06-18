@@ -48,20 +48,13 @@ const operators = {
 };
 
 const imagesPath = {
-    0: '../../assets/fingerprint.pbm',
-    1: '../../assets/holes.pbm',
-    2: '../../assets/text.pbm',
-    3: '../../assets/map.pbm',
+    0: '../../assets/map.pbm',
     4: '../../assets/lena.pgm',
     5: '../../assets/airplane.pgm',
     6: '../../assets/cameraman.pgm',
-    7: '../../assets/supernova.pgm',
-    8: '../../assets/sea.pgm',
-    9: '../../assets/tomography.pgm',
-    10: '../../assets/particles.pgm',
 };
 
-let kernelList = [0, 1, 0, 1, 1, 1, 0, 1, 0];
+let matriz = [0, 1, 0, 1, 1, 1, 0, 1, 0];
 
 const downloadBtn = document.getElementById('download-btn');
 const applyAgainBtn = document.getElementById('apply-again-btn');
@@ -79,7 +72,7 @@ let processedImg = new Image();
 const mainCanvas = function (sketch) {
     sketch.setup = function () {
         sketch.createCanvas(256, 256).parent("original-img");
-        readImage('../assets/fingerprint.pbm', sketch, img);
+        readImage('../assets/map.pbm', sketch, img);
     }
 
     imgSelector.onchange = _ => readImage(imagesPath[imgSelector.value], sketch, img);
@@ -110,7 +103,7 @@ let processedCanvas = function (sketch) {
             processedImg.data = img.data;
         } else {
             currentOperator = operators[value];
-            processedImg.data = currentOperator(img.data, img.w, img.h, kernelList);
+            processedImg.data = currentOperator(img.data, img.w, img.h, matriz);
         }
 
         paintImage(sketch, processedImg);
@@ -118,11 +111,11 @@ let processedCanvas = function (sketch) {
 
     inputMatrix.onchange = function () {
         for (let i = 0; i < 9; i++) {
-            kernelList[i] = parseInt(inputMatrixValues[i].value);
+            matriz[i] = parseInt(inputMatrixValues[i].value);
         }
 
         if (currentOperator != null) {
-            processedImg.data = currentOperator(img.data, img.w, img.h, kernelList);
+            processedImg.data = currentOperator(img.data, img.w, img.h, matriz);
             paintImage(sketch, processedImg);
         }
     }

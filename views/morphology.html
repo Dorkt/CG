@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morfologia</title>
+    <title>Operadores Morfológicos</title>
     <link rel="shortcut icon" href="../assets/favicon.png"/>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <script src="../js/lib/bootstrap.bundle.min.js"></script>
@@ -22,20 +22,13 @@
                         <div class="card-img-top" id="original-img" style="margin-bottom: 20px"></div>
                         <div style="width: 256px; height: 50px;" class="text-center">
                             <select class="form-select" aria-label="Selecionar filtro" id="img-selector">
-                                <optgroup label="P&B">
-                                    <option selected value="0">Fingerprint</option>
-                                    <option value="1">Holes</option>
-                                    <option value="2">Texto</option>
-                                    <option value="3">Mapa</option>
+                                <optgroup label="Imagens Binárias">
+                                    <option value="0">Mapa</option>
                                 </optgroup>
-                                <optgroup label="Cinza">
+                                <optgroup label="Imagens nível de cinza">
                                     <option value="4">Lena</option>
                                     <option value="5">Airplane</option>
                                     <option value="6">Cameraman</option>
-                                    <option value="7">Supernova</option>
-                                    <option value="8">Sea</option>
-                                    <option value="9">Tomografia</option>
-                                    <option value="10">Particulas</option>
                                 </optgroup>
                             </select>
                         </div>
@@ -49,7 +42,7 @@
                         <div style="width: 280px; height: 135px;" class="text-center">
                             <select class="form-select" size="5" aria-label="Selecionar filtro" id="input-filter">
                                 <option selected value="0">Original</option>
-                                <optgroup label="P&B">
+                                <optgroup label="Operadores binários">
                                     <option value="1">Complemento</option>
                                     <option value="2">Erosão</option>
                                     <option value="3">Dilatação</option>
@@ -60,7 +53,7 @@
                                     <option value="8">Gradiente</option>
                                     <option value="9">Afinamento</option>
                                 </optgroup>
-                                <optgroup label="Cinza">
+                                <optgroup label="Operadores para nível de cinza">
                                     <option value="10">Erosão</option>
                                     <option value="11">Dilatação</option>
                                     <option value="12">Abertura</option>

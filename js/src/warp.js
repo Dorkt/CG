@@ -1,145 +1,159 @@
-let startImg = new Image();
-let endImg = new Image();
-let generatedImages = [];
+let gammaValue = 1;
+let logScalarValue = 1;
+let aValue = 1;
+let bValue = 1;
+let targetValue = 255;
+let greyCenterValue = 127;
+let sigmaValue = 25;
 
-let pointsA = [];
-let trianglesA = [];
+let maxValue = 255;
+let minValue = 0;
 
-let pointsB = [];
-let trianglesB = [];
+let ttt = new Image();
+var count = 0;
 
-const applyBtn = document.getElementById('apply-btn');
-const triangulateA = document.getElementById('triangulate-a-btn');
-const triangulateB = document.getElementById('triangulate-b-btn');
+const negative = (r) => maxValue - r;
+const gamma = (r) => Math.round(((1 + r) / maxValue) ** gammaValue * maxValue);
+const logarithmic = (r) =>
+  Math.round(logScalarValue * Math.log(1 + r / maxValue) * maxValue);
+const linear = (r) => Math.round(aValue * r + bValue);
+const dynamicRange = (r) => Math.round((r / maxValue) * targetValue);
+const sigmoid = (r) =>
+  Math.round(
+    maxValue * (1 / (1 + Math.exp(-(r - greyCenterValue) / sigmaValue)))
+  );
 
-const slideControl = document.getElementById('range-control');
+let currentOperator = null;
 
-const startCanvas = function (sketch) {
-    let canvas = document.getElementById("start-img");
+const operators = {
+  1: negative,
+  2: gamma,
+  3: logarithmic,
+  4: linear,
+  5: dynamicRange,
+  6: sigmoid,
+};
 
-    sketch.setup = function () {
-        sketch.createCanvas(400, 400).parent('start-img');
-        readImage('../assets/start.pgm', sketch, startImg);
+const imagesPath = {
+  0: "../../assets/lena.pgm",
+  1: "../../assets/cameraman.pgm",
+  2: "../../assets/airplane.pgm",
+  3: "../../assets/pepper.pgm",
+  4: "../../assets/brain.pgm",
+  5: "../../assets/barbara.pgm",
+  6: "../../assets/tyre.pgm",
+  7: "../../assets/einstein.pgm",
+  8: "../../assets/sea.pgm",
+};
+
+let kernelList = [];
+
+const downloadBtn = document.getElementById("download-btn");
+
+const filterSelector = document.getElementById("input-filter");
+const inputMatrix = document.getElementById("input-matrix");
+const inputMatrixValues = document.getElementsByName("array[]");
+const imgSelector = document.getElementById("img-selector");
+
+const normalizeSwitch = document.getElementById("normalizeSwitch");
+
+let doNormalize = false;
+
+let img = new Image();
+let processedImg = new Image();
+
+function gatoDeArnold(imagem, iteracoes) {
+  // Obtém as dimensões da imagem
+  count++;
+  const altura = imagem.length;
+  const largura = imagem[0].length;
+
+  // Cria uma nova imagem para armazenar o resultado
+  const novaImagem = new Array(altura);
+  for (let i = 0; i < altura; i++) {
+    novaImagem[i] = new Array(largura);
+  }
+  // Aplica a transformação de Arnold
+  for (let k = 0; k < iteracoes; k++) {
+    for (let y = 0; y < altura; y++) {
+      for (let x = 0; x < largura; x++) {
+        const novoX = (2 * x + y) % largura;
+        const novoY = (x + y) % altura;
+        novaImagem[novoY][novoX] = imagem[y][x];
+      }
     }
-
-    canvas.addEventListener("mousedown", function () {
-        let x = Math.round(sketch.mouseX);
-        let y = Math.round(sketch.mouseY);
-        pointsA.push([x, y]);
-        trianglesA = Delaunay.triangulate(pointsA);
-        sketch.circle(x, y, 5);
-        document.getElementById('start-pts').innerHTML = `Pts: ${pointsA.length}`;
-    });
-
-    triangulateA.onclick = function () {
-        return drawTriangles(sketch, pointsA, trianglesA)
+    // Atualiza a imagem original com a imagem transformada
+    for (let y = 0; y < altura; y++) {
+      for (let x = 0; x < largura; x++) {
+        imagem[y][x] = novaImagem[y][x];
+      }
     }
+  }
+
+  // Retorna a imagem transformada
+  console.log(count);
+  return imagem;
 }
 
-const endCanvas = function (sketch) {
-    let canvas = document.getElementById("end-img");
+function saoIguais(array1, array2) {
+  // Verifica se os arrays têm o mesmo comprimento
+  if (array1.length !== array2.length) {
+    return false;
+  }
 
-    sketch.setup = function () {
-        sketch.createCanvas(300, 300).parent("end-img");
-        readImage('../../assets/end.pgm', sketch, endImg);
+  // Compara elemento por elemento
+  for (let i = 0; i < array1.length; i++) {
+    if (array1[i] !== array2[i]) {
+      return false;
     }
+  }
 
-    canvas.addEventListener("mousedown", function () {
-        let x = Math.round(sketch.mouseX);
-        let y = Math.round(sketch.mouseY);
-        pointsB.push([x, y]);
-        sketch.circle(x, y, 5);
-        document.getElementById('end-pts').innerHTML = `Pts: ${pointsB.length}`;
-    });
-
-    triangulateB.onclick = function () {
-        trianglesB = Delaunay.triangulate(pointsB);
-        return drawTriangles(sketch, pointsB, trianglesB);
-    }
+  // Se todos os elementos são iguais, retorna true
+  return true;
 }
 
+const mainCanvas = function (sketch) {
+  sketch.setup = function () {
+    sketch.createCanvas(256, 256).parent("original-img");
+    readImage("../assets/lena.pgm", sketch, img);
+  };
 
-const resultCanvas = function (sketch) {
-    let resultsImg = [];
-    let resultPoints = [];
+  imgSelector.onchange = (_) =>
+    readImage(imagesPath[imgSelector.value], sketch, img);
+};
 
-    sketch.setup = function () {
-        sketch.createCanvas(300, 300).parent("result-img");
+let processedCanvas = function (sketch) {
+  sketch.setup = function () {
+    sketch.createCanvas(256, 256).parent("processed-img");
+  };
+
+  filterSelector.onclick = function () {
+    let value = filterSelector.value;
+
+    processedImg.type = img.type;
+    processedImg.w = img.w;
+    processedImg.h = img.h;
+
+    ttt.type = img.type;
+    ttt.w = img.w;
+    ttt.h = img.h;
+
+    currentOperator = null;
+    processedImg.data = img.data;
+
+    ttt.data = img.data;
+    const timer = setInterval(minhaFuncao, 70);
+    setTimeout(() => {
+      clearInterval(timer);
+    }, 13440);
+    function minhaFuncao() {
+      let x = gatoDeArnold(ttt.data, 1);
+      paintImage(sketch, processedImg);
     }
 
-    slideControl.onchange = function () {
-        if (resultsImg.length > 0) {
-            paintImage(sketch, resultsImg[slideControl.value]);
-            let t = Delaunay.triangulate(resultPoints[slideControl.value]);
-            drawTriangles(sketch, resultPoints[slideControl.value], t);
-        }
-    }
+    paintImage(sketch, processedImg);
+  };
+};
 
-    applyBtn.onclick = function () {
-        for (let i = 0; i < 10; i++) {
-            let img = new Image();
-            img.type = startImg.type;
-            img.w = startImg.w;
-            img.h = startImg.h;
-            img.data = [];
-
-            let pts = [];
-            let time = 1 / (10 - i);
-
-            for (let i = 0; i < pointsA.length; i++) {
-                let x = Math.round(((1 - time) * pointsA[i][0]) + (time * pointsB[i][0]));
-                let y = Math.round(((1 - time) * pointsA[i][1]) + (time * pointsB[i][1]));
-
-                pts.push([x, y]);
-            }
-
-            let t = Delaunay.triangulate(pts)
-            let tt = makeTriangles(t, pts);
-
-            for (let i = 0; i < startImg.h; i++) {
-                img.data [i] = [];
-                for (let j = 0; j < startImg.w; j++) {
-                    for (let k = 0; k < tt.length; k++) {
-                        img.data[i][j] = startImg.data[i][j] + (endImg.data[i][j] - startImg.data[i][j]) * time;
-                    }
-                }
-            }
-
-            resultsImg.push(img);
-            resultPoints.push(pts);
-        }
-    }
-
-}
-
-function makeTriangles(t, pts) {
-    let res = [];
-    for (let i = 0; i < t.length; i += 3) {
-        res.push({
-            a: {x: pts[t[i]][0], y: pts[t[i]][1]},
-            b: {x: pts[t[i + 1]][0], y: pts[t[i + 1]][1]},
-            c: {x: pts[t[i + 2]][0], y: pts[t[i + 2]][1]}
-        })
-    }
-    return res;
-}
-
-
-function drawTriangles(sketch, points, triangles) {
-    for (let i = 0; i < triangles.length; i += 3) {
-        sketch.beginShape();
-        sketch.noFill();
-        sketch.stroke(255, 0, 0);
-        sketch.strokeWeight(1);
-        sketch.vertex(points[triangles[i]][0], points[triangles[i]][1]);
-        sketch.vertex(points[triangles[i + 1]][0], points[triangles[i + 1]][1]);
-        sketch.vertex(points[triangles[i + 2]][0], points[triangles[i + 2]][1]);
-        sketch.endShape(sketch.CLOSE);
-    }
-}
-
-new p5(startCanvas, 'p5sketch');
-new p5(endCanvas, 'p5sketch');
-new p5(resultCanvas, 'p5sketch');
-
-
+new p5(mainCanvas, "p5sketch");
+new p5(processedCanvas, "p5sketch");

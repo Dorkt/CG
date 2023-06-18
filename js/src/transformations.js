@@ -32,11 +32,6 @@ const imagesPath = {
     1: '../../assets/cameraman.pgm',
     2: '../../assets/airplane.pgm',
     3: '../../assets/pepper.pgm',
-    4: '../../assets/brain.pgm',
-    5: '../../assets/barbara.pgm',
-    6: '../../assets/tyre.pgm',
-    7: '../../assets/einstein.pgm',
-    8: '../../assets/sea.pgm',
 };
 
 let kernelList = [];
