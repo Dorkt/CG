@@ -168,8 +168,6 @@ function drawHistograma(sketch, img, width, height) {
     sketch.line(range, y1 + 2, range, y1 + 4); // end x
     sketch.text('255', range + 2, y1 + 10);
 
-    sketch.text('1 - FDA', range + 2, vPadding);
-
     sketch.line(-4, y1, -2, y1); // start y
     sketch.text(`${min}`, -20, y1);
 

@@ -164,8 +164,6 @@ const imagesPath = {
 };
 
 const applyFilterBtn = document.getElementById("apply-filter-btn");
-const applyAgainBtn = document.getElementById("apply-again-btn");
-const downloadBtn = document.getElementById("download-btn");
 
 const filterSelector = document.getElementById("input-filter");
 const inputMatrix = document.getElementById("input-matrix");
@@ -188,13 +186,6 @@ const mainCanvas = function (sketch) {
 
   imgSelector.onchange = (_) =>
     readImage(imagesPath[imgSelector.value], sketch, img);
-
-  applyAgainBtn.onclick = function () {
-    if (processedImg.w !== 0) {
-      img.data = processedImg.data;
-      paintImage(sketch, img);
-    }
-  };
 
   inputMatrix.onchange = function () {
     if (filterSelector.value !== 1) filterSelector.value = 1;
@@ -245,11 +236,6 @@ const processedCanvas = function (sketch) {
       processedImg.data = convolution(img, activeKernel, doNormalize);
       paintImage(sketch, processedImg);
     }
-  };
-
-  downloadBtn.onclick = function () {
-    let filename = "image.pgm";
-    download(filename, processedImg);
   };
 };
 

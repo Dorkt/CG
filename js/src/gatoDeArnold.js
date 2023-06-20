@@ -1,66 +1,33 @@
-let gammaValue = 1;
-let logScalarValue = 1;
-let aValue = 1;
-let bValue = 1;
-let targetValue = 255;
-let greyCenterValue = 127;
-let sigmaValue = 25;
-
-let maxValue = 255;
-let minValue = 0;
-
-let ttt = new Image();
+let newProcessedImage = new Image();
 var count = 0;
 
-const negative = (r) => maxValue - r;
-const gamma = (r) => Math.round(((1 + r) / maxValue) ** gammaValue * maxValue);
-const logarithmic = (r) =>
-  Math.round(logScalarValue * Math.log(1 + r / maxValue) * maxValue);
-const linear = (r) => Math.round(aValue * r + bValue);
-const dynamicRange = (r) => Math.round((r / maxValue) * targetValue);
-const sigmoid = (r) =>
-  Math.round(
-    maxValue * (1 / (1 + Math.exp(-(r - greyCenterValue) / sigmaValue)))
-  );
-
-let currentOperator = null;
-
-const operators = {
-  1: negative,
-  2: gamma,
-  3: logarithmic,
-  4: linear,
-  5: dynamicRange,
-  6: sigmoid,
-};
-
 const imagesPath = {
-  0: "../../assets/lena.pgm",
-  1: "../../assets/cameraman.pgm",
-  2: "../../assets/airplane.pgm",
-  3: "../../assets/pepper.pgm",
-  4: "../../assets/brain.pgm",
-  5: "../../assets/barbara.pgm",
-  6: "../../assets/tyre.pgm",
-  7: "../../assets/einstein.pgm",
-  8: "../../assets/sea.pgm",
+  0: "../../assets/airplane.pgm",
 };
-
-let kernelList = [];
-
-const downloadBtn = document.getElementById("download-btn");
 
 const filterSelector = document.getElementById("input-filter");
-const inputMatrix = document.getElementById("input-matrix");
-const inputMatrixValues = document.getElementsByName("array[]");
 const imgSelector = document.getElementById("img-selector");
-
-const normalizeSwitch = document.getElementById("normalizeSwitch");
-
-let doNormalize = false;
 
 let img = new Image();
 let processedImg = new Image();
+
+function compararArrays(array1, array2) {
+  // Verificar o tamanho dos arrays
+  if (array1.length !== array2.length) {
+    return false;
+  }
+
+  // Percorrer os elementos dos arrays
+  for (let i = 0; i < array1.length; i++) {
+    // Comparar os valores dos elementos
+    if (array1[i] !== array2[i]) {
+      return false;
+    }
+  }
+
+  // Se nenhum valor diferente foi encontrado, os arrays são iguais
+  return true;
+}
 
 function gatoDeArnold(imagem, iteracoes) {
   // Obtém as dimensões da imagem
@@ -92,7 +59,7 @@ function gatoDeArnold(imagem, iteracoes) {
 
   // Retorna a imagem transformada
   console.log(count);
-  return imagem;
+  return novaImagem;
 }
 
 function saoIguais(array1, array2) {
@@ -115,7 +82,8 @@ function saoIguais(array1, array2) {
 const mainCanvas = function (sketch) {
   sketch.setup = function () {
     sketch.createCanvas(256, 256).parent("original-img");
-    readImage("../assets/lena.pgm", sketch, img);
+    readImage("../assets/airplane.pgm", sketch, img);
+    readImage("../assets/airplane.pgm", sketch, processedImg);
   };
 
   imgSelector.onchange = (_) =>
@@ -128,30 +96,27 @@ let processedCanvas = function (sketch) {
   };
 
   filterSelector.onclick = function () {
-    let value = filterSelector.value;
+    newProcessedImage.type = processedImg.type;
+    newProcessedImage.w = processedImg.w;
+    newProcessedImage.h = processedImg.h;
+    newProcessedImage.data = processedImg.data;
 
-    processedImg.type = img.type;
-    processedImg.w = img.w;
-    processedImg.h = img.h;
-
-    ttt.type = img.type;
-    ttt.w = img.w;
-    ttt.h = img.h;
-
-    currentOperator = null;
-    processedImg.data = img.data;
-
-    ttt.data = img.data;
-    const timer = setInterval(minhaFuncao, 70);
-    setTimeout(() => {
-      clearInterval(timer);
-    }, 13440);
-    function minhaFuncao() {
-      let x = gatoDeArnold(ttt.data, 1);
-      paintImage(sketch, processedImg);
+    while (!_.isEqual(img.data, gatoDeArnold(newProcessedImage.data, 1))) {
+      setTimeout(minhaFuncao, 70);
     }
 
-    paintImage(sketch, processedImg);
+    function minhaFuncao() {
+      gatoDeArnold(newProcessedImage.data, 1);
+      paintImage(sketch, newProcessedImage);
+    }
+
+    // do {
+    //   xx = gatoDeArnold(newProcessedImage.data, 1);
+    //   paintImage(sketch, newProcessedImage);
+    //   console.log('entrou', x);
+    // } while (saoIguais(img, newProcessedImage));
+
+    // paintImage(sketch, processedImg);
   };
 };
 
