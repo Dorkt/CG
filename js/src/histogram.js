@@ -6,8 +6,6 @@ const imgSelector = document.getElementById('img-selector');
 const showOriginalHist = document.getElementById('show-original-hist');
 const showProcessedHist = document.getElementById('show-processed-hist');
 
-const downloadBtn = document.getElementById('download-btn');
-
 const equalizeBtn = document.getElementById('equalize-btn');
 
 let img = new Image();
@@ -54,12 +52,6 @@ const processedHistogramaCanvas = function (sketch) {
         sketch.createCanvas(400, 200).parent("processed-hist");
         if (processedImg.w !== 0) drawHistograma(sketch, processedImg, 350, 180);
     }
-
-    downloadBtn.onclick = function () {
-        let filename = "image.pgm";
-        download(filename, processedImg);
-    }
-
 }
 
 new p5(mainCanvas, 'p5sketch');

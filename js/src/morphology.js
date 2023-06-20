@@ -56,9 +56,6 @@ const imagesPath = {
 
 let matriz = [0, 1, 0, 1, 1, 1, 0, 1, 0];
 
-const downloadBtn = document.getElementById('download-btn');
-const applyAgainBtn = document.getElementById('apply-again-btn');
-
 const filterSelector = document.getElementById('input-filter');
 
 const inputMatrix = document.getElementById('input-matrix');
@@ -76,13 +73,6 @@ const mainCanvas = function (sketch) {
     }
 
     imgSelector.onchange = _ => readImage(imagesPath[imgSelector.value], sketch, img);
-
-    applyAgainBtn.onclick = function () {
-        if (processedImg.w !== 0) {
-            img.data = processedImg.data;
-            paintImage(sketch, img);
-        }
-    }
 }
 
 
@@ -117,13 +107,6 @@ let processedCanvas = function (sketch) {
         if (currentOperator != null) {
             processedImg.data = currentOperator(img.data, img.w, img.h, matriz);
             paintImage(sketch, processedImg);
-        }
-    }
-
-    downloadBtn.onclick = function () {
-        if (processedImg.w !== 0) {
-            let filename = "image.pbm";
-            download(filename, processedImg);
         }
     }
 };

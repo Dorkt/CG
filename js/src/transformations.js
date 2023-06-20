@@ -36,9 +36,6 @@ const imagesPath = {
 
 let kernelList = [];
 
-const applyAgainBtn = document.getElementById('apply-again-btn');
-const downloadBtn = document.getElementById('download-btn');
-
 const filterSelector = document.getElementById('input-filter');
 const inputMatrix = document.getElementById('input-matrix');
 const inputMatrixValues = document.getElementsByName('array[]');
@@ -58,11 +55,6 @@ const mainCanvas = function (sketch) {
     }
 
     imgSelector.onchange = _ => readImage(imagesPath[imgSelector.value], sketch, img);
-
-    applyAgainBtn.onclick = function () {
-        img.data = processedImg.data;
-        paintImage(sketch, img);
-    }
 }
 
 
@@ -105,13 +97,6 @@ let processedCanvas = function (sketch) {
 
     normalizeSwitch.onchange = function () {
         doNormalize = !doNormalize;
-    }
-
-    downloadBtn.onclick = function () {
-        if (processedImg.w !== 0) {
-            let filename = "image.pgm";
-            download(filename, processedImg);
-        }
     }
 };
 

@@ -171,7 +171,7 @@ const inputMatrixValues = document.getElementsByName("array[]");
 const imgSelector = document.getElementById("img-selector");
 const scalar = document.getElementById("scalar");
 
-const normalizeSwitch = document.getElementById("normalizeSwitch");
+const normalizeSwitch = document.getElementById("normalizeSwitch")
 
 let doNormalize = false;
 

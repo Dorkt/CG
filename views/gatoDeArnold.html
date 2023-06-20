@@ -19,7 +19,7 @@
       >
         <div class="row w-100 p-0 w-0">
           <div class="col-lg-4 mb-2 align-items-center">
-            <div class="card mx-auto" style="width: 300px; height: 400px">
+            <div class="card mx-auto" style="width: 300px; height: 400px; border: none;">
               <div class="card-body">
                 <h5 class="card-title text-center">Imagem Original</h5>
                 <div class="card-img-top" id="original-img"></div>
@@ -39,15 +39,17 @@
           <div class="col-lg-4 mb-2">
             <div
               class="card mx-auto align-items-center"
-              style="width: 300px; height: 400px"
+              style="width: 300px; height: 400px; border: none;"
             >
               <div class="card-body">
                 <h5 class="card-title text-center">Imagem Processada</h5>
                 <div class="card-img-top" id="processed-img"></div>
-                <div class="btn-group d-flex mt-4" role="group">
+                <span>Iterações: </span>
+                <span id="count-img">0</span>
+                <div class="btn-group d-flex mt-2" role="group">
                   <button
                     type="button"
-                    class="btn btn-outline-dark"
+                    class="btn btn-primary"
                     id="input-filter"
                   >
                     Aplicar

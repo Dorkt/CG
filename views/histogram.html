@@ -13,10 +13,10 @@
 <body>
 <div id="nav-placeholder"></div>
 <main>
-    <div class="container">
+    <div class="container" style="border: 1px solid; border-radius: 5px; border-color: #C9C9C9;">
         <div class="row">
             <div class="col">
-                <div class="card text-center" style="height: 400px;">
+                <div class="card text-center" style="height: 400px; border: none;">
                     <div class="card-body">
                         <h5 class="card-title">Imagem Original</h5>
                         <div class="card-img-top" id="original-img"></div>
@@ -24,7 +24,7 @@
                             <select class="form-select" aria-label="Selecionar imagem" id="img-selector">
                                 <option selected value="0">Lena</option>
                             </select>
-                            <button type="button" class="btn btn-outline-dark" id="equalize-btn">
+                            <button type="button" class="btn btn-primary" id="equalize-btn">
                                 Equalizar
                             </button>
                         </div>
@@ -32,14 +32,14 @@
                 </div>
             </div>
             <div class="col-5">
-                <div class="card text-center" style="height: 600px;">
+                <div class="card text-center" style="height: 600px; border: none;">
                     <div class="card-body">
                         <h5 class="card-title">Histogramas</h5>
-                        <button type="button" class="btn btn-sm btn-outline-dark" id="show-original-hist">
+                        <button type="button" class="btn btn-sm btn-primary" id="show-original-hist">
                             Original
                         </button>
                         <div class="card-img-top" id="original-hist" style="margin: 10px 0 10px;"></div>
-                        <button type="button" class="btn btn-sm btn-outline-dark" id="show-processed-hist">
+                        <button type="button" class="btn btn-sm btn-primary" id="show-processed-hist">
                             Equalizado
                         </button>
                         <div class="card-img-top" id="processed-hist" style="margin: 10px 0 10px;"></div>
@@ -47,13 +47,10 @@
                 </div>
             </div>
             <div class="col">
-                <div class="card text-center" style="height: 400px;">
+                <div class="card text-center" style="height: 400px; border: none;">
                     <div class="card-body mx-auto">
                         <h5 class="card-title">Imagem Processada</h5>
                         <div class="card-img-top" id="processed-img"></div>
-                        <button type="button" class="btn btn-dark" id="download-btn" style="width: 256px;">
-                            Baixar
-                        </button>
                     </div>
                 </div>
             </div>

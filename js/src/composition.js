@@ -29,7 +29,6 @@ const imgASelector = document.getElementById('img-a-selector');
 const imgBSelector = document.getElementById('img-b-selector');
 
 const normalizeSwitch = document.getElementById('normalizeSwitch');
-const downloadBtn = document.getElementById('download-btn');
 
 let doNormalize = false;
 
@@ -77,13 +76,6 @@ const processedCanvas = function (sketch) {
 
     normalizeSwitch.onchange = function () {
         doNormalize = !doNormalize;
-    }
-
-    downloadBtn.onclick = function () {
-        if (processedImg.w !== 0) {
-            let filename = "image.pgm";
-            download(filename, processedImg);
-        }
     }
 };
 

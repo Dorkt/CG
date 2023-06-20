@@ -1,5 +1,4 @@
 let newProcessedImage = new Image();
-var count = 0;
 
 const imagesPath = {
   0: "../../assets/airplane.pgm",
@@ -7,6 +6,7 @@ const imagesPath = {
 
 const filterSelector = document.getElementById("input-filter");
 const imgSelector = document.getElementById("img-selector");
+let iterationText = document.getElementById("count-img");
 
 let img = new Image();
 let processedImg = new Image();
@@ -31,7 +31,6 @@ function compararArrays(array1, array2) {
 
 function gatoDeArnold(imagem, iteracoes) {
   // Obtém as dimensões da imagem
-  count++;
   const altura = imagem.length;
   const largura = imagem[0].length;
 
@@ -58,7 +57,6 @@ function gatoDeArnold(imagem, iteracoes) {
   }
 
   // Retorna a imagem transformada
-  console.log(count);
   return novaImagem;
 }
 
@@ -101,14 +99,24 @@ let processedCanvas = function (sketch) {
     newProcessedImage.h = processedImg.h;
     newProcessedImage.data = processedImg.data;
 
-    while (!_.isEqual(img.data, gatoDeArnold(newProcessedImage.data, 1))) {
-      setTimeout(minhaFuncao, 70);
-    }
+    let iterarions = 0;
+    gatoDeArnold(newProcessedImage.data, 1);
+    function loopComTimeout() {
+      // Condição de saída do loop
+      if (_.isEqual(img.data, newProcessedImage.data, 1)) {
+        return;
+      }
 
-    function minhaFuncao() {
       gatoDeArnold(newProcessedImage.data, 1);
       paintImage(sketch, newProcessedImage);
+
+      iterationText.innerHTML = iterarions++;
+
+      // Chama a função novamente após um certo período de tempo (1000ms = 1 segundo)
+      setTimeout(loopComTimeout, 70);
     }
+
+    loopComTimeout();
 
     // do {
     //   xx = gatoDeArnold(newProcessedImage.data, 1);

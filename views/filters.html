@@ -14,7 +14,7 @@
 <div id="nav-placeholder"></div>
 <main>
     <div class="container-fluid p-0 m-0 justify-content-center d-grid" style="min-height: 400px;">
-        <div class="row w-100 p-0 w-0" style="border: 1px solid;">
+        <div class="row w-100 p-0 w-0" style="border: 1px solid; border-radius: 5px; border-color: #C9C9C9;">
             <div class="col-lg-4 mb-2 align-items-center">
                 <div class="card  mx-auto align-items-center" style="width:300px; height: 400px; border: none;">
                     <div class="card-body">
@@ -23,8 +23,8 @@
                         <div style="width: 256px; height: 50px;" class="text-center">
                             <select class="form-select" aria-label="Selecionar imagem" id="img-selector">
                                 <option selected value="0">Lena</option>
-                                <option value="1">Lena salp</option>
-                                <option value="3">Airplane</option>
+                                <option value="1">Lena sal e pimenta</option>
+                                <option value="3">Avião</option>
                             </select>
                         </div>
                     </div>
@@ -59,29 +59,39 @@
                         </div>
                         <div class="container text-center" style="margin: 10px 0 18px">
                             <form id="input-matrix" class="text-center" role="form">
+                                <input class="" type="number" name="array[]" value="0" min="-10" max="10" step="1"
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                                 <input type="number" name="array[]" value="0" min="-10" max="10" step="1"
-                                       style="width: 65px; text-align:center">
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                                 <input type="number" name="array[]" value="0" min="-10" max="10" step="1"
-                                       style="width: 65px; text-align:center">
-                                <input type="number" name="array[]" value="0" min="-10" max="10" step="1"
-                                       style="width: 65px; text-align:center">
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                                 <br>
                                 <input type="number" name="array[]" value="0" min="-10" max="10" step="1"
-                                       style="width: 65px; text-align:center">
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                                 <input type="number" name="array[]" value="0" min="-10" max="10" step="1"
-                                       style="width: 65px; text-align:center">
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                                 <input type="number" name="array[]" value="0" min="-10" max="10" step="1"
-                                       style="width: 65px; text-align:center">
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                                 <br>
                                 <input type="number" name="array[]" value="0" min="-10" max="10" step="1"
-                                       style="width: 65px; text-align:center">
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                                 <input type="number" name="array[]" value="0" min="-10" max="10" step="1"
-                                       style="width: 65px; text-align:center">
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                                 <input type="number" name="array[]" value="0" min="-10" max="10" step="1"
-                                       style="width: 65px; text-align:center">
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                                 <br> x <br>
                                 <input type="number" id="scalar" value="1" min="-10" max="10" step=".1"
-                                       style="width: 65px; text-align:center">
+                                       style="width: 65px; text-align:center; border: 0; outline: 0;
+                                       border-bottom: 1px solid #C9C9C9;">
                             </form>
                         </div>
                         <button type="button" class="btn btn-primary" id="apply-filter-btn" style="width: 250px;">
@@ -95,9 +105,9 @@
                     <div class="card-body">
                         <h5 class="card-title text-center">Imagem Processada</h5>
                         <div class="card-img-top" id="processed-img"></div>
-                        <div class="form-check form-switch" style="margin: 10px 0 10px">
+                        <div class="form-check" style="margin: 10px 0 10px;">
                             <input class="form-check-input" type="checkbox" id="normalizeSwitch">
-                            <label class="form-check-label" for="normalizeSwitch">Normalizar Imagem</label>
+                            <label class="form-check-label" for="normalizeSwitch">Normalizar</label>
                         </div>
                     </div>
                 </div>
